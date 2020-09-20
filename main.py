@@ -4,12 +4,14 @@ import os
 execution_path = os.getcwd()
 
 detector = ObjectDetection()
-# detector.setModelTypeAsTinyYOLOv3()
 detector.setModelTypeAsYOLOv3()
 detector.setModelPath("./models/yolo.h5")
 print(detector.modelPath)
 detector.loadModel()
-detections = detector.detectObjectsFromImage(
+
+custom = detector.CustomObjects(car=True, bus=True, motorcycle=True, truck=True)
+detections = detector.detectCustomObjectsFromImage(
+  custom_objects=custom,
   input_image="frame.jpg",
   output_image_path=os.path.join(execution_path , "result.jpg"),
   minimum_percentage_probability=30
