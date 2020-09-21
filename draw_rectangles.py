@@ -22,7 +22,5 @@ p2 = Polygon(loltlot(pts_array[1]))
 print(p1.intersects(p2))
 
 
-for pts in pts_array:
-  image = cv2.polylines(image, [pts], True, color, thickness)
-
+image = cv2.polylines(image, pts_array, True, color, thickness)
 cv2.imwrite('drawed_result.jpg', image)
