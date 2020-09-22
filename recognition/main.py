@@ -26,7 +26,7 @@ def main():
             space_amount = detector.detect_motion()
             db.set_spaces_amount(1, space_amount)
             exec_time = time.time() - start_time
-            time.sleep(60 - exec_time)
+            time.sleep(63 - exec_time)
             url = nextUrl(url)
             print(url)
 
@@ -47,9 +47,11 @@ def nextUrl(currentUrl):
     elif (open_cv.VideoCapture(without_id + "_" + str(id - 1) + '.mp4').isOpened()):
         print("-1")
         return without_id + "_" + str(id - 1) + '.mp4'
-    else:
+    elif (open_cv.VideoCapture(without_id + "_" + str(id + 1) + '.mp4').isOpened()):
         print("+1")
         return without_id + "_" + str(id + 1) + '.mp4'
+    else:
+        return findCurrentMinute(without_id)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Start recognition')

@@ -49,10 +49,11 @@ class MotionDetector:
         statuses = [False] * len(coordinates_data)
         times = [None] * len(coordinates_data)
 
-        if capture.isOpened():
-            print("IsOpened")
-        else:
+        if not capture.isOpened():
             print("IsNotOpened")
+            return space_amount
+        else:
+            print("IsOpened")
 
         while capture.isOpened():
             result, frame = capture.read()
