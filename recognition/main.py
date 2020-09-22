@@ -1,31 +1,31 @@
 import argparse
+import os
+import sys
 from cv2 import cv2 as open_cv
 import time
 import yaml
 from motion_detector import MotionDetector
-from colors import *
-import logging
-
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath('sql_worker.py'))))
+from sql_worker import SQL as Database
 
 def main():
-    logging.basicConfig(level=logging.INFO)
-
     args = parse_args()
 
     data_file = args.data_file
     start_frame = args.start_frame
     without_id = 'http://vs7.videoprobki.com.ua/streams/cam673stream_'
     url = findCurrentMinute(without_id)
-    photoId = 1
+
+    db = Database()
 
     with open(data_file, "r") as data:
         points = yaml.load(data)
         while True:
             detector = MotionDetector(url, points, int(start_frame))
             start_time = time.time()
-            detector.detect_motion(photoId)
+            space_amount = detector.detect_motion()
+            db.set_spaces_amount(1, space_amount)
             exec_time = time.time() - start_time
-            photoId = photoId + 1
             time.sleep(60 - exec_time)
             url = nextUrl(url)
             print(url)

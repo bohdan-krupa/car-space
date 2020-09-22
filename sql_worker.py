@@ -3,7 +3,7 @@ import sqlite3
 
 class SQL:
   def __init__(self):
-    self.connection = sqlite3.connect('parkings.db')
+    self.connection = sqlite3.connect('../parkings.db')
     self.cursor = self.connection.cursor()
 
 
