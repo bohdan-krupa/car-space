@@ -1,0 +1,1 @@
+# bot token, path for db , etc
