@@ -93,7 +93,7 @@ class MotionDetector:
                 draw_contours(new_frame, coordinates, str(p["id"] + 1), COLOR_WHITE, color)
             last_frame = new_frame
 
-        open_cv.imwrite("recognition/images/Chornovola.jpg", last_frame)
+        open_cv.imwrite("recognition/images/Chornovola st.jpg", last_frame)
         space_amount = len(list(filter(lambda x: x == True, statuses)))
         print(space_amount)
         capture.release()

@@ -11,7 +11,8 @@ class ParkingCoords:
       'street': parking[1],
       'spaces_amount': parking[2],
       'lat': parking[3],
-      'lon': parking[4]
+      'lon': parking[4],
+      'is_camera': parking[5]
     }, parkings))
 
 

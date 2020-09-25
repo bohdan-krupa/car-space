@@ -41,14 +41,20 @@ def send_parking(chat_id, lat, lon):
     parkingCoords = ParkingCoords()
     parking = parkingCoords.getClosestParking(lat, lon)
 
-    bot.send_message(
-      chat_id,
-      f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
-    )
+    if (parking['is_camera']):
+      bot.send_message(
+        chat_id,
+        f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
+      )
+      photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
+      bot.send_photo(chat_id, photo)
+    else:
+      bot.send_message(
+        chat_id,
+        f"Найближча парковка: {parking['street']}\nНа даній парковці поки немає камери"
+      )
+      
     bot.send_location(chat_id, parking['lat'], parking['lon'])
-    
-    photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
-    bot.send_photo(chat_id, photo)
   except Exception as e:
     print(e)
 
