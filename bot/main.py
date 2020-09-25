@@ -41,7 +41,10 @@ def send_parking(chat_id, lat, lon):
     parkingCoords = ParkingCoords()
     parking = parkingCoords.getClosestParking(lat, lon)
 
-    bot.send_message(chat_id, f"The closest parking: {parking['street']}, spaces amount - {parking['spaces_amount']}")
+    bot.send_message(
+      chat_id,
+      f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
+    )
     bot.send_location(chat_id, parking['lat'], parking['lon'])
     
     photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
