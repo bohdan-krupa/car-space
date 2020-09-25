@@ -1,5 +1,5 @@
-IS_DEPLOYED = False
-WEBHOOK_URL = 'https://bodyasave.pythonanywhere.com/'
+IS_DEPLOYED = True
+WEBHOOK_URL = 'https://bodyasavedev.pythonanywhere.com/'
 WEBHOOK_SECRET = 'gungevfefeerghackktijdt902284322852947295hskf'
 
 
