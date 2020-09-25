@@ -5,7 +5,6 @@ from cv2 import cv2 as open_cv
 import time
 import yaml
 from motion_detector import MotionDetector
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath('sql_worker.py'))))
 from sql_worker import SQL as Database
 
 def main():

@@ -1,2 +1,0 @@
-TOKEN = "1377008652:AAFL7eVcyI6L1c4-O6KH-HBpnOShclO7o5w"
-STATES_DB = "botstates.vdb"

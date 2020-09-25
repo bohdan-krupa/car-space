@@ -1,0 +1,8 @@
+IS_DEPLOYED = False
+WEBHOOK_URL = 'https://bodyasave.pythonanywhere.com/'
+WEBHOOK_SECRET = 'gungevfefeerghackktijdt902284322852947295hskf'
+
+
+TOKEN = '1387223609:AAG7BNHqwQLyUZMrINFVYCh645CPHPcbC7k'
+
+OPENCAGE_KEY = '52e749b448e848cba03e6337a3d02762'
