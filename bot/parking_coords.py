@@ -22,9 +22,21 @@ class ParkingCoords:
     return 12742 * asin(sqrt(a))
 
 
-  def closest(self, data, v):
-    return min(data, key=lambda p: self.distance(v['lat'], v['lon'], p['lat'], p['lon']))
+  def get_sorted_by_distance(self, data, v):
+
+    parkings_with_distances = list(
+      map(lambda p: [
+        self.distance(v['lat'], v['lon'], p['lat'], p['lon']),
+        p
+      ], data)
+    )
+    sorted_parkings = sorted(parkings_with_distances, key=lambda p: p[0])
+
+    return sorted_parkings
 
 
-  def getClosestParking(self, lat, lon):
-    return self.closest(self.parkings, {'lat': lat, 'lon': lon})
+  def get_5_closest_parking(self, lat, lon):
+    first_5 = self.get_sorted_by_distance(self.parkings, {'lat': lat, 'lon': lon})[:5]
+    parkings = list(map(lambda p: p[1], first_5))
+
+    return parkings

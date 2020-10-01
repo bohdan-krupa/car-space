@@ -39,22 +39,23 @@ def send_parking_by_address(msg):
 def send_parking(chat_id, lat, lon):
   try:
     parkingCoords = ParkingCoords()
-    parking = parkingCoords.getClosestParking(lat, lon)
+    parkings = parkingCoords.get_5_closest_parking(lat, lon)
 
-    if (parking['is_camera']):
-      bot.send_message(
-        chat_id,
-        f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
-      )
-      photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
-      bot.send_photo(chat_id, photo)
-    else:
-      bot.send_message(
-        chat_id,
-        f"Найближча парковка: {parking['street']}\nНа даній парковці поки немає камери"
-      )
-      
-    bot.send_location(chat_id, parking['lat'], parking['lon'])
+    for parking in parkings:
+      if (parking['is_camera']):
+        bot.send_message(
+          chat_id,
+          f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
+        )
+        photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
+        bot.send_photo(chat_id, photo)
+      else:
+        bot.send_message(
+          chat_id,
+          f"Найближча парковка: {parking['street']}\nНа даній парковці поки немає камери"
+        )
+        
+      bot.send_location(chat_id, parking['lat'], parking['lon'])
   except Exception as e:
     print(e)
 
