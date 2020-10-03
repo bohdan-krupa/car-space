@@ -32,3 +32,6 @@ Base.metadata.create_all(engine)
 
 
 
+    print(records)
+except Exception as e:
+    print(e)
