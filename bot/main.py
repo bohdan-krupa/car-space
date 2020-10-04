@@ -61,6 +61,7 @@ def send_parking(chat_id, lat, lon):
 
 
 if __name__ == '__main__':
+      
   if IS_DEPLOYED:
     bot.remove_webhook()
     time.sleep(1)

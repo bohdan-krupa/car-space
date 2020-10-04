@@ -1,40 +1,61 @@
 import json
+import psycopg2
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, text
-from sqlalchemy import Column, Integer, String, Date, REAL, Text, BOOLEAN
+from sqlalchemy import Column, Integer, String, Date, REAL, Text, BOOLEAN, Table
+
 
 
 Base = declarative_base()
 engine = create_engine("postgresql://postgres@localhost:5431/postgres")
 
-class Parking(Base):
-    __tablename__ = "parking"
-    id = Column(Integer(), primary_key=True)
-    street = Column(String())
-    spaces_amount = Column(Integer())
-    latitude = Column(REAL())
-    longitude = Column(REAL())
-    camera_url = Column(BOOLEAN())
+try:
+    conn = psycopg2.connect(dbname='postgres', 
+                            user='postgres', 
+                            password='',
+                            host='localhost',
+                            port='5431'
+                            )
+except Exception as e:
+    print(e)
 
-    @staticmethod
-    def datafromJson():
-        with open("./backupData/SQLite.json", "r") as file:
-            data = json.loads(file.read())
-        
-        for i in data:
-            parking = Parking(
-                    id=i.get('id'), 
-                    street=i.get('street'), 
-                    spaces_amount=i.get('spaces_amount'),
-                    latitude=i.get('latitude'),
-                    longitude=i.get('longitude'),
-                    camera_url=i.get('is_camera')
-                    )
+class SQL:
+    def __init__(self):
+        self.conn = conn
+        self.cursor = self.conn.cursor()
+
+
+    def __del__(self):
+        self.conn.close()
+
+
+#   def set_spaces_amount(self, id, spaces_amount):
+#     with self.connection:
+#       query = f'UPDATE parkings SET spaces_amount = ? WHERE id = ?'
+#       self.cursor.execute(query, (spaces_amount, id))
+
+
+    def get_parkings(self):
+        with self.connection:
+            query = f'SELECT * FROM _parkings'
+            return self.cursor.execute(query).fetchall()
+
+
+
+
+
+
+# class Parking(Base):
+#     __tablename__ = Table('_subscriptions', Base.metadata,
+#                     autoload=True, autoload_with=engine)
+
+
             
 
 
-Parking.datafromJson()
-Base.metadata.create_all(engine)
+# parking = Parking()
+# parking.datafromJson()
+# Base.metadata.create_all(engine)
 
 
 
