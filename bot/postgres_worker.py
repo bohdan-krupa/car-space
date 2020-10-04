@@ -58,6 +58,11 @@ class SQL:
             query = f'SELECT * FROM _subscriptions'
             output = self.cursor.execute(query)
             return output
+    
+    def set_subscriptions(self, id, parking_id):
+        query = f'UPDATE _subscriptions SET user_id = {id}, parking_id = {parking_id}'
+        output = self.cursor.execute(query)
+        return output
 
 
 
