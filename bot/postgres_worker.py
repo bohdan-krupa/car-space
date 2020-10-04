@@ -52,6 +52,12 @@ class SQL:
             query = f'SELECT id FROM _parkings WHERE id={id}'
             output = self.cursor.execute(query)
             return output
+    
+    def get_subscriptions(self):
+        with self.connection:
+            query = f'SELECT * FROM _subscriptions'
+            output = self.cursor.execute(query)
+            return output
 
 
 
