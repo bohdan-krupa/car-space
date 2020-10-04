@@ -63,6 +63,11 @@ class SQL:
         query = f'UPDATE _subscriptions SET user_id = {id}, parking_id = {parking_id}'
         output = self.cursor.execute(query)
         return output
+    
+    def delete_subscriptions(self, id, parking_id):
+        query = f'DELETE FROM _subscriptions WHERE id={id} AND parking_id={parking_id}'
+        output = self.cursor.execute(query)
+        return output
 
 
 
