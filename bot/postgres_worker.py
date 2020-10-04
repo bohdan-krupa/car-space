@@ -21,12 +21,12 @@ except Exception as e:
 
 class SQL:
     def __init__(self):
-        self.conn = conn
+        self.connection = conn
         self.cursor = self.conn.cursor()
 
 
     def __del__(self):
-        self.conn.close()
+        self.connection.close()
 
 
 #   def set_spaces_amount(self, id, spaces_amount):
@@ -38,13 +38,28 @@ class SQL:
     def get_parkings(self):
         with self.connection:
             query = f'SELECT * FROM _parkings'
-            return self.cursor.execute(query).fetchall()
+            output = self.cursor.execute(query)
+            return output.fetchall()
+    
+    def set_spaces_amount(self, id, spaces_amount):
+        with self.connection:
+            query = f'UPDATE _parkings SET spaces_amount = ? WHERE id = ?'
+            output = self.cursor.execute(query, (id, spaces_amount))
+            return output
+    
+    def get_parkings_id(self,id):
+        with self.connection:
+            query = f'SELECT id FROM _parkings WHERE id={id}'
+            output = self.cursor.execute(query)
+            return output
 
 
 
 
 
 
+sql = SQL()
+sql.get_parkings()
 # class Parking(Base):
 #     __tablename__ = Table('_subscriptions', Base.metadata,
 #                     autoload=True, autoload_with=engine)
