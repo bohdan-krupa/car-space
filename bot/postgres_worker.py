@@ -21,19 +21,18 @@ class Parking(Base):
         with open("./backupData/SQLite.json", "r") as file:
             data = json.loads(file.read())
         
-        values = [list(x.values()) for x in data]
-        print(values)
-
-                
-
-
-
+        for i in data:
+            parking = Parking(
+                    id=i.get('id'), 
+                    street=i.get('street'), 
+                    spaces_amount=i.get('spaces_amount'),
+                    latitude=i.get('latitude'),
+                    longitude=i.get('longitude'),
+                    camera_url=i.get('is_camera')
+                    )
             
-                
-                
-           
 
-        
+
 Parking.datafromJson()
 Base.metadata.create_all(engine)
 
