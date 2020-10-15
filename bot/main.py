@@ -122,9 +122,3 @@ if __name__ == '__main__':
   else:
     bot.remove_webhook()
     bot.polling(none_stop=True)
-
-
-    # pyTelegramBotAPI
-    # opencage
-    # opencv-python
-    # PyYAML
