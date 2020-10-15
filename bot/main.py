@@ -40,16 +40,6 @@ def send_parking(chat_id, lat, lon):
   try:
     parkingCoords = ParkingCoords()
     parkings = parkingCoords.get_5_closest_parking(lat, lon)
-<<<<<<< HEAD
-
-    for parking in parkings:
-      if (parking['is_camera']):
-        bot.send_message(
-          chat_id,
-          f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
-        )
-        photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
-=======
     parking_num = 0
 
     for parking in parkings:
@@ -66,17 +56,10 @@ def send_parking(chat_id, lat, lon):
           """,
           parse_mode="Markdown"
         )
->>>>>>> main
         bot.send_photo(chat_id, photo)
       else:
         bot.send_message(
           chat_id,
-<<<<<<< HEAD
-          f"Найближча парковка: {parking['street']}\nНа даній парковці поки немає камери"
-        )
-        
-      bot.send_location(chat_id, parking['lat'], parking['lon'])
-=======
           f"""
           *{parking_num}* найближа парковка: _{parking['street']}_
           \n*На даній парковці поки немає камери*
@@ -118,16 +101,11 @@ def callback_inline(call):
       )
 
       bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Готово")
->>>>>>> main
   except Exception as e:
     print(e)
 
 
 if __name__ == '__main__':
-<<<<<<< HEAD
-      
-=======
->>>>>>> main
   if IS_DEPLOYED:
     bot.remove_webhook()
     time.sleep(1)
