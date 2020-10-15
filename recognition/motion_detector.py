@@ -3,25 +3,18 @@ import numpy as np
 from drawing_utils import draw_contours
 from colors import COLOR_GREEN, COLOR_WHITE, COLOR_BLUE
 
-global last_frame
-
 class MotionDetector:
     LAPLACIAN = 1.4
     DETECT_DELAY = 1
 
-    def __init__(self, video, coordinates, start_frame):
-        self.video = video
+    def __init__(self, coordinates):
         self.coordinates_data = coordinates
-        self.start_frame = start_frame
         self.contours = []
         self.bounds = []
         self.mask = []
 
-    def detect_motion(self):
+    def detect_motion(self, street_name, frame):
         space_amount = 0
-
-        capture = open_cv.VideoCapture(self.video)
-        capture.set(open_cv.CAP_PROP_POS_FRAMES, self.start_frame)
 
         coordinates_data = self.coordinates_data
         for p in coordinates_data:
@@ -47,57 +40,20 @@ class MotionDetector:
             self.mask.append(mask)
 
         statuses = [False] * len(coordinates_data)
-        times = [None] * len(coordinates_data)
 
-        if not capture.isOpened():
-            print("IsNotOpened")
-            return space_amount
-        else:
-            print("IsOpened")
+        blurred = open_cv.GaussianBlur(frame.copy(), (5, 5), 3)
+        grayed = open_cv.cvtColor(blurred, open_cv.COLOR_BGR2GRAY)
+        new_frame = frame.copy()
 
-        while capture.isOpened():
-            result, frame = capture.read()
-            if frame is None:
-                print("How?")
-                break
+        for index, p in enumerate(coordinates_data):
+            coordinates = self._coordinates(p)
+            statuses[index] = self.__apply(grayed, index, p)
+            color = COLOR_GREEN if statuses[index] else COLOR_BLUE
+            draw_contours(new_frame, coordinates, str(p["id"] + 1), COLOR_WHITE, color)
 
-            if not result:
-                raise CaptureReadError("Error reading video capture on frame %s" % str(frame))
-
-
-            blurred = open_cv.GaussianBlur(frame.copy(), (5, 5), 3)
-            grayed = open_cv.cvtColor(blurred, open_cv.COLOR_BGR2GRAY)
-            new_frame = frame.copy()
-            position_in_seconds = capture.get(open_cv.CAP_PROP_POS_MSEC) / 1000.0
-
-            for index, c in enumerate(coordinates_data):
-                status = self.__apply(grayed, index, c)
-
-                if times[index] is not None and self.same_status(statuses, index, status):
-                    times[index] = None
-                    continue
-
-                if times[index] is not None and self.status_changed(statuses, index, status):
-                    if position_in_seconds - times[index] >= MotionDetector.DETECT_DELAY:
-                        statuses[index] = status
-                        times[index] = None
-                    continue
-
-                if times[index] is None and self.status_changed(statuses, index, status):
-                    times[index] = position_in_seconds
-
-            for index, p in enumerate(coordinates_data):
-                coordinates = self._coordinates(p)
-
-                color = COLOR_GREEN if statuses[index] else COLOR_BLUE
-                draw_contours(new_frame, coordinates, str(p["id"] + 1), COLOR_WHITE, color)
-            last_frame = new_frame
-
-        open_cv.imwrite("recognition/images/Chornovola st.jpg", last_frame)
+        open_cv.imwrite("recognition/images/" + street_name + ".jpg", new_frame)
         space_amount = len(list(filter(lambda x: x == True, statuses)))
-        print(space_amount)
-        capture.release()
-        open_cv.destroyAllWindows()
+        # print(space_amount)
         return space_amount
 
     def __apply(self, grayed, index, p):

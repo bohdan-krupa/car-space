@@ -40,6 +40,7 @@ def send_parking(chat_id, lat, lon):
   try:
     parkingCoords = ParkingCoords()
     parkings = parkingCoords.get_5_closest_parking(lat, lon)
+<<<<<<< HEAD
 
     for parking in parkings:
       if (parking['is_camera']):
@@ -48,20 +49,85 @@ def send_parking(chat_id, lat, lon):
           f"Найближча парковка: {parking['street']}\nВільні місця: {parking['spaces_amount']}"
         )
         photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
+=======
+    parking_num = 0
+
+    for parking in parkings:
+      parking_num += 1
+
+      if (parking['camera_url']):
+        photo = open(f"recognition/images/{parking['street']}.jpg", 'rb')
+
+        bot.send_message(
+          chat_id,
+          f"""
+          *{parking_num}* найближа парковка: _{parking['street']}_
+          \nВільні місця: *{parking['spaces_amount']}*
+          """,
+          parse_mode="Markdown"
+        )
+>>>>>>> main
         bot.send_photo(chat_id, photo)
       else:
         bot.send_message(
           chat_id,
+<<<<<<< HEAD
           f"Найближча парковка: {parking['street']}\nНа даній парковці поки немає камери"
         )
         
       bot.send_location(chat_id, parking['lat'], parking['lon'])
+=======
+          f"""
+          *{parking_num}* найближа парковка: _{parking['street']}_
+          \n*На даній парковці поки немає камери*
+          """,
+          parse_mode='Markdown'
+        )
+
+      markup = telebot.types.InlineKeyboardMarkup()
+      
+      if parking['camera_url']:
+        markup.add(
+          telebot.types.InlineKeyboardButton('Повідомити, якщо зайнято', callback_data='subscribe')
+        )
+
+      bot.send_location(chat_id, parking['lat'], parking['lon'], reply_markup=markup)
+  except Exception as e:
+    print(e)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_inline(call):
+  try:
+    if call.message:
+      markup = telebot.types.InlineKeyboardMarkup()
+
+      if call.data == 'subscribe':
+        markup.add(
+          telebot.types.InlineKeyboardButton('Відмінити', callback_data='unsubscribe')
+        )
+      elif call.data == 'unsubscribe':
+        markup.add(
+          telebot.types.InlineKeyboardButton('Повідомити, якщо зайнято', callback_data='subscribe')
+        )
+
+      bot.edit_message_reply_markup(
+        chat_id=call.message.chat.id,
+        message_id=call.message.message_id,
+        reply_markup=markup
+      )
+
+      bot.answer_callback_query(callback_query_id=call.id, show_alert=False, text="Готово")
+>>>>>>> main
   except Exception as e:
     print(e)
 
 
 if __name__ == '__main__':
+<<<<<<< HEAD
       
+=======
+>>>>>>> main
   if IS_DEPLOYED:
     bot.remove_webhook()
     time.sleep(1)

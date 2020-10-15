@@ -17,7 +17,7 @@ class SQL:
       self.cursor.execute(query, (spaces_amount, id))
 
 
-  def get_all_parkings(self):
+  def get_parkings(self):
     with self.connection:
       query = f'SELECT * FROM parkings'
       return self.cursor.execute(query).fetchall()
