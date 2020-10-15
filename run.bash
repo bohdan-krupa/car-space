@@ -3,4 +3,4 @@ P1=$!
 python3 bot/main.py &
 P2=$!
 
-wait $P1 $P2
+wait $P1 $P2 
