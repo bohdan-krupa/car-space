@@ -7,6 +7,7 @@ import yaml
 from motion_detector import MotionDetector
 from sql_worker import SQL as Database
 
+
 def main():
     args = parse_args()
 

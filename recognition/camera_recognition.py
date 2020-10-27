@@ -7,6 +7,11 @@ import time
 import yaml
 from motion_detector import MotionDetector
 from sql_worker import SQL as Database
+from time import sleep
+
+while(1):
+  sleep(1)
+  print('RECOGNITION')
 
 def main():
     args = parse_args()

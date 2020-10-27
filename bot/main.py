@@ -6,6 +6,11 @@ from config import IS_DEPLOYED, TOKEN, WEBHOOK_URL, WEBHOOK_SECRET, OPENCAGE_KEY
 from sql_worker import SQL
 from parking_coords import ParkingCoords
 from opencage.geocoder import OpenCageGeocode
+# from time import sleep
+
+# while(1):
+#     sleep(1)
+#     print('BOT')
 
 
 bot = telebot.TeleBot(TOKEN, threaded=False)
